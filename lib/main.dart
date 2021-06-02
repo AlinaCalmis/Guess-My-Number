@@ -1,147 +1,140 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:math';
 
-void main() =>  runApp(GuessNumber());
+void main() => runApp(const GuessNumber());
 
 class GuessNumber extends StatefulWidget {
-  const GuessNumber({Key key}) : super(key: key);
+  const GuessNumber({Key? key}) : super(key: key);
 
   @override
   _GuessNumberState createState() => _GuessNumberState();
 }
 
 class _GuessNumberState extends State<GuessNumber> {
-  TextEditingController _controller = new TextEditingController();
-  static Random random = new Random();
+  final TextEditingController _controller = TextEditingController();
+  static Random random = Random();
   int randomized = random.nextInt(100) + 1;
   int _readValue = 0;
-  String _text = "";
-  String _try = "higher";
+  String _text = '';
+  String _try = 'higher';
 
   // generates Dialog Alert pop up window
   void getAlert(BuildContext context) {
-
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text("You guessed right"),
-          content: Text("It was $_readValue"),
-          contentPadding: EdgeInsets.all(100.0),
-          actions: <Widget>[
-            new TextButton(
-                onPressed: (){
-                  setState(() {
-                    randomized = random.nextInt(100) + 1;
-                    _text = "";
-                  });
-                  Navigator.pop(context);
-                },
-                child: Text("Try again!")
-            ),
-            new TextButton(
-                onPressed: (){
-                  Navigator.pop(context);
-                },
-                child: Text("Ok")
-            )
-          ],
-        ),
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('You guessed right'),
+        content: Text('It was $_readValue'),
+        contentPadding: const EdgeInsets.all(100.0),
+        actions: <Widget>[
+          TextButton(
+              onPressed: () {
+                setState(() {
+                  randomized = random.nextInt(100) + 1;
+                  _text = '';
+                });
+                Navigator.pop(context);
+              },
+              child: const Text('Try again!')),
+          TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Ok'))
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold (
+      home: Scaffold(
         appBar: AppBar(
-          title: Center(
-            child: Text(
-              "Guess my number"
-            ),
+          title: const Center(
+            child: Text('Guess my number'),
           ),
         ),
-        body: Builder(builder: (context) => Padding(
-            padding:  EdgeInsets.all(10.0),
-            child : Column(
+        body: Builder(
+          builder: (BuildContext context) => Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
               children: <Widget>[
-                new Center(
+                const Center(
                   child: Text(
                     "I'm thinking of a number between 1 and 100.",
                     style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
                     textAlign: TextAlign.center,
                   ),
                 ),
-                new SizedBox(height: 10),
-                new Center(
+                const SizedBox(height: 10),
+                const Center(
                   child: Text(
                     "It's your turn to guess my number!",
                     style: TextStyle(fontSize: 15.0),
                   ),
                 ),
-                new SizedBox(height: 10),
-                new Text(_text, style: TextStyle(fontWeight: FontWeight.w300, fontSize: 40.0),textAlign: TextAlign.center),
-                new Container(
+                const SizedBox(height: 10),
+                Text(_text,
+                    style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 40.0), textAlign: TextAlign.center),
+                Container(
                   height: 190.0,
                   decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                     color: Colors.white,
-                    boxShadow: [
+                    boxShadow: <BoxShadow>[
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 5,
                         blurRadius: 7,
-                        offset: Offset(0, 3), // changes position of shadow
+                        offset: const Offset(0, 3), // changes position of shadow
                       ),
                     ],
                   ),
-                  child : new Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      new SizedBox(height: 10,),
-                      new Text("Try a number!",
-                        style: TextStyle(
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.w300
-                        ),
+                      const SizedBox(
+                        height: 10,
                       ),
-                      new SizedBox(height: 10),
-                      new Center(
+                      const Text(
+                        'Try a number!',
+                        style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+                      ),
+                      const SizedBox(height: 10),
+                      Center(
                         child: Form(
-                            child: Padding(
-                              padding: EdgeInsets.all(20),
-                              child: TextField(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: TextField(
                               controller: _controller,
                               cursorHeight: 30,
-                              keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
+                              keyboardType: TextInputType.number,
                             ),
                           ),
                         ),
                       ),
-                      new TextButton(
+                      TextButton(
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(Colors.black12),
                           ),
-                          onPressed: (){
-                            setState() {
+                          onPressed: () {
+                            _readValue = int.tryParse(_controller.text)!;
 
-                              _readValue = int.tryParse(_controller.text);
-
-                              if (_readValue != randomized){
-                                if (_readValue > randomized) {
-                                  _try = "lower";
-                                } else {
-                                  _try = "higher";
-                                }
-                                _text = "You tried $_readValue.\nTry $_try";
+                            if (_readValue != randomized) {
+                              if (_readValue > randomized) {
+                                _try = 'lower';
                               } else {
-                                _text = "You tried $_readValue.\nYou guessed right.";
-                                getAlert(context);
+                                _try = 'higher';
                               }
-                            };
+                              _text = 'You tried $_readValue.\nTry $_try';
+                            } else {
+                              _text = 'You tried $_readValue.\nYou guessed right.';
+                              getAlert(context);
+                            }
                           },
-                          child: Text("Guess")
-                      ),
+                          child: const Text('Guess')),
                     ],
                   ),
                 ),
