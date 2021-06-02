@@ -64,7 +64,8 @@ class _GuessNumberState extends State<GuessNumber> {
                 const Center(
                   child: Text(
                     "I'm thinking of a number between 1 and 100.",
-                    style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+                    style:
+                        TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -77,7 +78,9 @@ class _GuessNumberState extends State<GuessNumber> {
                 ),
                 const SizedBox(height: 10),
                 Text(_text,
-                    style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 40.0), textAlign: TextAlign.center),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w300, fontSize: 40.0),
+                    textAlign: TextAlign.center),
                 Container(
                   height: 190.0,
                   decoration: BoxDecoration(
@@ -88,7 +91,8 @@ class _GuessNumberState extends State<GuessNumber> {
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 5,
                         blurRadius: 7,
-                        offset: const Offset(0, 3), // changes position of shadow
+                        offset:
+                            const Offset(0, 3), // changes position of shadow
                       ),
                     ],
                   ),
@@ -100,7 +104,8 @@ class _GuessNumberState extends State<GuessNumber> {
                       ),
                       const Text(
                         'Try a number!',
-                        style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w300),
+                        style: TextStyle(
+                            fontSize: 25.0, fontWeight: FontWeight.w300),
                       ),
                       const SizedBox(height: 10),
                       Center(
@@ -117,7 +122,8 @@ class _GuessNumberState extends State<GuessNumber> {
                       ),
                       TextButton(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.black12),
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.black12),
                           ),
                           onPressed: () {
                             _readValue = int.tryParse(_controller.text)!;
@@ -130,7 +136,8 @@ class _GuessNumberState extends State<GuessNumber> {
                               }
                               _text = 'You tried $_readValue.\nTry $_try';
                             } else {
-                              _text = 'You tried $_readValue.\nYou guessed right.';
+                              _text =
+                                  'You tried $_readValue.\nYou guessed right.';
                               getAlert(context);
                             }
                           },
